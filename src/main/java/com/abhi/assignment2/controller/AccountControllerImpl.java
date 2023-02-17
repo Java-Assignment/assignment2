@@ -1,4 +1,6 @@
 package com.abhi.assignment2.controller;
+import com.abhi.assignment2.service.FileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import com.abhi.assignment2.exception.AccountFileUploadException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,27 +12,33 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
+
 
 @Slf4j
 @RestController
 public class AccountControllerImpl implements AccountController {
+
+    @Autowired
+    private FileService fileService;
     @Value("${file.upload-dir}")
     private String filedirectory;
     @Override
-    public ResponseEntity<String> fileUpload(MultipartFile uploadfile) throws AccountFileUploadException, IOException {
+    public ResponseEntity<?> fileUpload(MultipartFile uploadfile) throws AccountFileUploadException, IOException {
         Path path = Paths.get(filedirectory, uploadfile.getOriginalFilename());
-        File newFile = new File(path.toString());
-        Files.write(path, uploadfile.getBytes());
-//        Path path=Path.of(filedirectory);
-////        Files.createFile(path);
-//        Files.write(path,uploadfile.getBytes());
-        return new ResponseEntity<>("File uploaded successfully!", HttpStatus.OK);
+//        File newFile = new File(path.toString());
+//        Files.write(path, uploadfile.getBytes());
+        FileOutputStream outputStream = new FileOutputStream(path.toFile());
+        byte[] strToBytes = uploadfile.getBytes();
+        outputStream.write(strToBytes);
+
+        outputStream.close();
+
+
+        return new ResponseEntity<>(fileService.addFile(uploadfile), HttpStatus.OK);
 
 //        log.info(uploadfile.getOriginalFilename());
 //        try {

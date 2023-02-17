@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@Document(collection = "as2accounts")
+
 @Data
 public class Account {
     @Id

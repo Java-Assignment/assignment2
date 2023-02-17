@@ -21,6 +21,6 @@ import java.io.IOException;
 public interface AccountController {
     @PostMapping(value = "/file",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "AC file upload")
-    ResponseEntity<String> fileUpload(@RequestParam("uploadfile") MultipartFile uploadfile) throws AccountFileUploadException, IOException;
+    ResponseEntity<?> fileUpload(@RequestParam("uploadfile") MultipartFile uploadfile) throws AccountFileUploadException, IOException;
 
 }
