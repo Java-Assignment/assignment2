@@ -4,6 +4,7 @@ import com.abhi.assignment2.dto.AccountDTO;
 import com.abhi.assignment2.entity.Account;
 
 import com.abhi.assignment2.repository.FileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @Service
+@Slf4j
 public class FileService {
 
     @Autowired
@@ -54,18 +56,24 @@ public class FileService {
 
     }
 
-    public List<AccountDTO> getAccounts(String id) throws FileNotFoundException {
-        Optional<Account> acFromDb=fileRepository.findById(id);
-//        List<AccountDTO> account=new ArrayList<>();
-        if(acFromDb.isPresent()){
-            Path path = Paths.get(filedirectory, fileName);
-            File f=new File(path.toUri());
-            if(f.exists()){
-                //
+    public String getAccounts(String id) throws FileNotFoundException {
+        Optional<Account> ac = fileRepository.findById(id);
+         String filename= ac.get().getFileName();
+        List<String> account=new ArrayList<>();
+        String fileContent = "";
+        if (ac.isPresent()) {
+            Path path = Paths.get(filedirectory,filename);
+            File f = new File(path.toUri());
+            Scanner sc = new Scanner(f);
+            while (sc.hasNextLine()) {
+                fileContent = fileContent.concat(sc.nextLine()+"\n");
+                account.add(fileContent);
             }
-
-
+        } else{
+            return  "File not found ";
         }
-        return null;
+        return  fileContent;
+        }
+
     }
-}
+

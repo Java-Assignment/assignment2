@@ -41,8 +41,8 @@ public class AccountControllerImpl implements AccountController {
     }
 
     @Override
-    public ResponseEntity<List<AccountDTO>> getAccounts(String id) throws FileNotFoundException {
-        List<AccountDTO> accounts = fileService.getAccounts(id);
+    public ResponseEntity<String> getAccounts(String id) throws FileNotFoundException {
+        String accounts = fileService.getAccounts(id);
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 }

@@ -28,8 +28,8 @@ public interface AccountController {
     ResponseEntity<?> fileUpload(@RequestParam("uploadfile") MultipartFile uploadfile) throws AccountFileUploadException, IOException;
 
 
-    @GetMapping
+    @GetMapping("/{id}")
     @Operation(summary ="get all saved details of file" )
-    ResponseEntity< List<AccountDTO>> getAccounts(@RequestParam(value="id") String id) throws FileNotFoundException;
+    ResponseEntity<String> getAccounts(@RequestParam(value="id") String id) throws FileNotFoundException;
 }
 
