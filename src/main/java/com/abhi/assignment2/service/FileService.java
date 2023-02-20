@@ -29,6 +29,8 @@ public class FileService {
     private String filedirectory;
 
     private  static  String fileName;
+    @Autowired
+    private AccountDTO accountDTO;
 
 
     public Account addFile(MultipartFile upload) throws IOException {
@@ -67,8 +69,9 @@ public class FileService {
             Scanner sc = new Scanner(f);
             while (sc.hasNextLine()) {
                 fileContent = fileContent.concat(sc.nextLine()+"\n");
-                account.add(fileContent);
             }
+            String [] k=fileContent.split(" ");
+
         } else{
             return  "File not found ";
         }
