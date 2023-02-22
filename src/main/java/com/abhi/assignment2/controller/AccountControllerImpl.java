@@ -1,17 +1,19 @@
 package com.abhi.assignment2.controller;
-import com.abhi.assignment2.dto.AccountDTO;
-import com.abhi.assignment2.service.FileService;
+
+import com.abhi.assignment2.entity.Account;
+import com.abhi.assignment2.exception.AccountFileUploadException;
+import com.abhi.assignment2.exception.AppAccountNotFoundException;
+import com.abhi.assignment2.service.AccountServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import com.abhi.assignment2.exception.AccountFileUploadException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -22,28 +24,39 @@ import java.util.List;
 public class AccountControllerImpl implements AccountController {
 
     @Autowired
-    private FileService fileService;
+    private AccountServiceImpl accountService;
     @Value("${file.upload-dir}")
-    private String filedirectory;
+    private String fileDirectory;
 
     @Override
     public ResponseEntity<?> fileUpload(MultipartFile uploadfile) throws AccountFileUploadException, IOException {
-        Path path = Paths.get(filedirectory, uploadfile.getOriginalFilename());
-        FileOutputStream outputStream = new FileOutputStream(path.toFile());
-        byte[] strToBytes = uploadfile.getBytes();
-        outputStream.write(strToBytes);
+        Path path = Paths.get(fileDirectory, uploadfile.getOriginalFilename());
+        try (OutputStream outputStream = Files.newOutputStream(path);
+             BufferedOutputStream bos = new BufferedOutputStream(outputStream);) {
+            bos.write(uploadfile.getBytes());
+            // TODO - where is the call to service layer to upload data in mongodb ?
+            accountService.addAccounts(path.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("faied to write byte file");
+        }
 
-        outputStream.close();
-
-
-        return new ResponseEntity<>(fileService.addFile(uploadfile), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 
     @Override
-    public ResponseEntity<String> getAccounts(String id) throws FileNotFoundException {
-        String accounts = fileService.getAccounts(id);
-        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    public ResponseEntity <Account> get(String accountID) throws AppAccountNotFoundException {
+        Account account = accountService.get(accountID);
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<Account>> getCusByAccountName(String customerName) {
+        List<Account> acc = accountService.getCusByAccountName(customerName);
+        return new ResponseEntity<>(acc, HttpStatus.OK);
+    }
+
+
 }
 

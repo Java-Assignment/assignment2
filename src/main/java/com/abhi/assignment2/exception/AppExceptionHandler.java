@@ -17,4 +17,10 @@ public class AppExceptionHandler {
 
     }
 
+    @ExceptionHandler(value=AppAccountNotFoundException.class)
+    public ResponseEntity<String> handleException(AppAccountNotFoundException exception){
+        log.error(exception.getMessage());
+        return  new ResponseEntity<>(exception.getMessage(),HttpStatus.NOT_FOUND);
+    }
+
 }
