@@ -1,8 +1,10 @@
 package com.abhi.assignment2.controller;
 
 import com.abhi.assignment2.entity.Account;
+import com.abhi.assignment2.entity.AccountEnrichment;
 import com.abhi.assignment2.exception.AccountFileUploadException;
 import com.abhi.assignment2.exception.AppAccountNotFoundException;
+import com.abhi.assignment2.service.AccountEnrichmentServiceImpl;
 import com.abhi.assignment2.service.AccountServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class AccountControllerImpl implements AccountController {
 
     @Autowired
     private AccountServiceImpl accountService;
+    @Autowired
+    private AccountEnrichmentServiceImpl accountEnrichmentServiceImpl;
     @Value("${file.upload-dir}")
     private String fileDirectory;
 
@@ -34,7 +38,7 @@ public class AccountControllerImpl implements AccountController {
         try (OutputStream outputStream = Files.newOutputStream(path);
              BufferedOutputStream bos = new BufferedOutputStream(outputStream);) {
             bos.write(uploadfile.getBytes());
-            // TODO - where is the call to service layer to upload data in mongodb ?
+            bos.flush();
             accountService.addAccounts(path.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,6 +59,12 @@ public class AccountControllerImpl implements AccountController {
     public ResponseEntity<List<Account>> getCusByAccountName(String customerName) {
         List<Account> acc = accountService.getCusByAccountName(customerName);
         return new ResponseEntity<>(acc, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<AccountEnrichment> getAccountEnrichment(String accountID) throws AppAccountNotFoundException {
+        AccountEnrichment accountEnrichment=accountEnrichmentServiceImpl.getByAccountID(accountID);
+        return new ResponseEntity<>(accountEnrichment,HttpStatus.OK);
     }
 
 

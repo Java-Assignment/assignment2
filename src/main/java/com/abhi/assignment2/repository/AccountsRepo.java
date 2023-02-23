@@ -12,5 +12,7 @@ public interface AccountsRepo extends MongoRepository<Account, String> {
 
     List<Account> findByCustomerName(String customerName);
 
-    Optional<Account> findByAccountId(String accountID); // you have to use column name where account is .. not just Id
+//    Optional<Account> findByAccountId(String accountID);
+
+    Optional<Account> findByAccountID(String accountID);
 }

@@ -1,6 +1,8 @@
 package com.abhi.assignment2.service;
 
 import com.abhi.assignment2.entity.Account;
+import com.abhi.assignment2.entity.AccountStatus;
+import com.abhi.assignment2.entity.AccountType;
 import com.abhi.assignment2.exception.AppAccountNotFoundException;
 import com.abhi.assignment2.repository.AccountsRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +38,8 @@ public class AccountServiceImpl implements AccountService {
         this.accountsRepo = accountsRepo;
     }
 
+
+
     @Override
     public Account addAccounts(String upload) {
 //        log.info(upload);
@@ -52,10 +57,12 @@ public class AccountServiceImpl implements AccountService {
 //                String line="Veyi Kaga,000000000000,1430.0,2023-02-18";
                 String[] split = line.split(",");
                 Account account = new Account();
-                account.setCustomerName(split[0]);
-                account.setAccountId(split[1]);
+                account.setCustomerName(split[1]);
+                account.setAccountID(split[0]);
                 account.setAccountBalance(Float.valueOf(split[2]));
                 account.setCreateDate(LocalDate.parse(split[3]));
+                account.setAccountType(AccountType.generateRandomAccountType());
+                account.setAccountStatus(AccountStatus.generateRandomAccountStatus());
                 savedaccount = accountsRepo.save(account);
                 System.out.println(savedaccount);
             }
@@ -70,9 +77,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account get(String accountID) throws AppAccountNotFoundException {
-        Optional<Account> dbac = accountsRepo.findByAccountId(accountID);
+        Optional<Account> dbac = accountsRepo.findByAccountID(accountID);
         if (dbac.isPresent()) {
-            Account account = accountsRepo.findById(accountID).get();
+            Account account = accountsRepo.findByAccountID(accountID).get();
             log.info("account :"+account);
             return account;
         } else {
