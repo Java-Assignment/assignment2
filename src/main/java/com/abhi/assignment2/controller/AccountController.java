@@ -7,7 +7,6 @@ import com.abhi.assignment2.exception.AccountFileUploadException;
 import com.abhi.assignment2.exception.AppAccountNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.MediaType;

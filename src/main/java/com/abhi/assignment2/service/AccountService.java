@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AccountService {
     Account addAccounts(String upload);
+
     Account get(String accountID) throws AppAccountNotFoundException;
+
     List<Account> getCusByAccountName(String customerName);
 }

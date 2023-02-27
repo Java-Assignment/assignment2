@@ -25,9 +25,8 @@ public class AccountEnrichmentServiceImpl implements AccountEnrichmentService {
         if (db.isPresent()) {
             Account account = accountsRepo.findByAccountID(accountID).get();
             return accountMapper.convertAcToAccountEnrichment(account);
-        }
-        else{
-            throw new AppAccountNotFoundException("Missing account. AC : "+accountID);
+        } else {
+            throw new AppAccountNotFoundException("Missing account. AC : " + accountID);
         }
 
     }

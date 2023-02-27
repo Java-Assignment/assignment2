@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 public class AccountEnrichment {

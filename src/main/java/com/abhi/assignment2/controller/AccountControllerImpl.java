@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +52,7 @@ public class AccountControllerImpl implements AccountController {
     }
 
     @Override
-    public ResponseEntity <Account> get(String accountID) throws AppAccountNotFoundException {
+    public ResponseEntity<Account> get(String accountID) throws AppAccountNotFoundException {
         Account account = accountService.get(accountID);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -63,8 +65,8 @@ public class AccountControllerImpl implements AccountController {
 
     @Override
     public ResponseEntity<AccountEnrichment> getAccountEnrichment(String accountID) throws AppAccountNotFoundException {
-        AccountEnrichment accountEnrichment=accountEnrichmentServiceImpl.getByAccountID(accountID);
-        return new ResponseEntity<>(accountEnrichment,HttpStatus.OK);
+        AccountEnrichment accountEnrichment = accountEnrichmentServiceImpl.getByAccountID(accountID);
+        return new ResponseEntity<>(accountEnrichment, HttpStatus.OK);
     }
 
 

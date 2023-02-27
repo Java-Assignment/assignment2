@@ -2,7 +2,6 @@ package com.abhi.assignment2.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,16 +10,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class AppExceptionHandler {
     @ExceptionHandler(value = {AccountFileUploadException.class})
-    public ResponseEntity<String>handleException(AccountFileUploadException exception){
-        log.error(exception.getMessage(),exception);
+    public ResponseEntity<String> handleException(AccountFileUploadException exception) {
+        log.error(exception.getMessage(), exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
-    @ExceptionHandler(value=AppAccountNotFoundException.class)
-    public ResponseEntity<String> handleException(AppAccountNotFoundException exception){
+    @ExceptionHandler(value = AppAccountNotFoundException.class)
+    public ResponseEntity<String> handleException(AppAccountNotFoundException exception) {
         log.error(exception.getMessage());
-        return  new ResponseEntity<>(exception.getMessage(),HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }

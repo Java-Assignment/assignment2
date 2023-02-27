@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,23 +30,17 @@ public class AccountServiceImpl implements AccountService {
 
     private static Account savedaccount;
 
-    private  static Path path;
+    private static Path path;
 
     public AccountServiceImpl(AccountsRepo accountsRepo) {
         this.accountsRepo = accountsRepo;
     }
 
 
-
     @Override
     public Account addAccounts(String upload) {
-//        log.info(upload);
-//        int index = upload.lastIndexOf(File.separator);
-//        log.info(String.valueOf(index));
-//        String filename= upload.substring(index + 1);
-//        log.info(filename);
 
-         path = Paths.get(upload);
+        path = Paths.get(upload);
         log.info(String.valueOf(path));
 
         try (BufferedReader reader = Files.newBufferedReader(path)) {
@@ -80,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
         Optional<Account> dbac = accountsRepo.findByAccountID(accountID);
         if (dbac.isPresent()) {
             Account account = accountsRepo.findByAccountID(accountID).get();
-            log.info("account :"+account);
+            log.info("account :" + account);
             return account;
         } else {
             throw new AppAccountNotFoundException("Missing account id." + accountID);
@@ -92,12 +84,13 @@ public class AccountServiceImpl implements AccountService {
         List<Account> accounts;
         if (customerName != null) {
             accounts = accountsRepo.findByCustomerName(customerName).stream()
-                    .collect(Collectors.toList());;
+                    .collect(Collectors.toList());
+            ;
             log.info("In if else clause", accounts);
         } else {
             accounts = accountsRepo.findAll().stream().collect(Collectors.toList());
         }
-        log.info("accounts.size():"+accounts.size());
+        log.info("accounts.size():" + accounts.size());
         return accounts;
     }
 
