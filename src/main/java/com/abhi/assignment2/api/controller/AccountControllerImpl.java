@@ -1,11 +1,9 @@
-package com.abhi.assignment2.controller;
+package com.abhi.assignment2.api.controller;
 
-import com.abhi.assignment2.entity.Account;
-import com.abhi.assignment2.entity.AccountEnrichment;
-import com.abhi.assignment2.exception.AccountFileUploadException;
-import com.abhi.assignment2.exception.AppAccountNotFoundException;
-import com.abhi.assignment2.service.AccountEnrichmentServiceImpl;
-import com.abhi.assignment2.service.AccountServiceImpl;
+import com.abhi.assignment2.api.entity.Account;
+import com.abhi.assignment2.api.exception.AccountFileUploadException;
+import com.abhi.assignment2.api.exception.AppAccountNotFoundException;
+import com.abhi.assignment2.api.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +18,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 
 @Slf4j
@@ -28,25 +25,29 @@ import java.util.List;
 public class AccountControllerImpl implements AccountController {
 
     @Autowired
-    private AccountServiceImpl accountService;
-    @Autowired
-    private AccountEnrichmentServiceImpl accountEnrichmentServiceImpl;
+    private AccountService accountService;
+
     @Value("${file.upload-dir}")
     private String fileDirectory;
 
     @Override
     public ResponseEntity<?> fileUpload(MultipartFile uploadfile) throws AccountFileUploadException, IOException {
+        System.out.println("executing upload file . "+uploadfile.getOriginalFilename());
+        System.out.println("save file to "+fileDirectory);
         Path path = Paths.get(fileDirectory, uploadfile.getOriginalFilename());
+        if ( Files.exists(path)){
+            Files.delete(path);
+        }
         try (OutputStream outputStream = Files.newOutputStream(path);
              BufferedOutputStream bos = new BufferedOutputStream(outputStream);) {
             bos.write(uploadfile.getBytes());
             bos.flush();
-            accountService.addAccounts(path.toString());
+            System.out.println("File written");
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("faied to write byte file");
+            System.out.println("failed to write file");
         }
-
+        accountService.saveFileDataToDB(path);
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -55,18 +56,6 @@ public class AccountControllerImpl implements AccountController {
     public ResponseEntity<Account> get(String accountID) throws AppAccountNotFoundException {
         Account account = accountService.get(accountID);
         return new ResponseEntity<>(account, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<List<Account>> getCusByAccountName(String customerName) {
-        List<Account> acc = accountService.getCusByAccountName(customerName);
-        return new ResponseEntity<>(acc, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<AccountEnrichment> getAccountEnrichment(String accountID) throws AppAccountNotFoundException {
-        AccountEnrichment accountEnrichment = accountEnrichmentServiceImpl.getByAccountID(accountID);
-        return new ResponseEntity<>(accountEnrichment, HttpStatus.OK);
     }
 
 

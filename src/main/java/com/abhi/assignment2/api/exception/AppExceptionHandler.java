@@ -1,4 +1,4 @@
-package com.abhi.assignment2.exception;
+package com.abhi.assignment2.api.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
-package com.abhi.assignment2.entity;
+package com.abhi.assignment2.api.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @Document(collection = "as2accounts")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
@@ -20,9 +22,5 @@ public class Account {
     private Float accountBalance;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate createDate;
-
-    private AccountType accountType;
-    private AccountStatus accountStatus;
-
 
 }
