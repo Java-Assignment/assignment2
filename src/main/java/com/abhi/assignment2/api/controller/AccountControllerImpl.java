@@ -40,7 +40,10 @@ public class AccountControllerImpl implements AccountController {
         }
         try (OutputStream outputStream = Files.newOutputStream(path);
              BufferedOutputStream bos = new BufferedOutputStream(outputStream);) {
+            log.info("before bos write",bos);
             bos.write(uploadfile.getBytes());
+            log.info("after bos write",bos);
+
             bos.flush();
             System.out.println("File written");
         } catch (Exception e) {
