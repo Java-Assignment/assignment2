@@ -5,6 +5,7 @@ import com.abhi.assignment2.api.entity.Account;
 import com.abhi.assignment2.api.repository.AccountsRepo;
 import com.abhi.assignment2.externalsvc.AccountRefDataService;
 import com.abhi.assignment2.externalsvc.CustomerRefDataService;
+import com.abhi.assignment2.mapper.AccountDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +29,8 @@ public class AccountServiceImpl implements AccountService {
     private AccountRefDataService accountRefDataService;
     @Autowired
     private CustomerRefDataService customerRefDataService;
-
+    @Autowired
+    private AccountDTOMapper accountDTOMapper;
 
     @Override
     public void saveFileDataToDB(Path path) {
@@ -53,10 +55,10 @@ public class AccountServiceImpl implements AccountService {
             // TODO - add account and customer infoermation here. by calling reference data serivces ( as3 and as4 APIs )
 //         hint - WebClient
             String cusname = accountOptional.get().getCustomerName();
-            Mono<AccountDTO> accountRefDataService1 = accountRefDataService.getAccountById(accountID);
-            Mono<AccountDTO> customerRefDataService1 = customerRefDataService.getCustomerByName(cusname);
+            AccountDTO accountRefDataService1 = accountRefDataService.getAccountById(accountID);
+            //AccountDTO customerRefDataService1 = customerRefDataService.getCustomerByName(cusname);
             System.out.println(accountRefDataService1);
-            System.out.println(customerRefDataService1);
+            //System.out.println(customerRefDataService1);
             return accountOptional.get();
         }
         return null;

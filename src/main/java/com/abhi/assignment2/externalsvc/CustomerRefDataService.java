@@ -5,11 +5,12 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
+@Component
 public class CustomerRefDataService {
     @Autowired
     WebClient webClient;
@@ -20,7 +21,7 @@ public class CustomerRefDataService {
     }
 
     @GetMapping("/customer/{customerName}")
-    public Mono<AccountDTO> getCustomerByName(@PathVariable String customerName ){
-        return webClient.get().uri("/customer/"+customerName).retrieve().bodyToMono(AccountDTO.class);
+    public AccountDTO getCustomerByName(@PathVariable String customerName ){
+        return webClient.get().uri("/customer/"+customerName).retrieve().bodyToMono(AccountDTO.class).block();
     }
 }
