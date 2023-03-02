@@ -29,16 +29,6 @@ public interface AccountController {
     @GetMapping("/{accountID}")
     @Operation(summary = "Get information about a given account")
     ResponseEntity<Account> get(@PathVariable("accountID") @NotNull @Length(min = 12, max = 12) String accountID) throws AppAccountNotFoundException;
-/*
-
-    @GetMapping
-    @Operation(summary = "get all accounts by customer name")
-    ResponseEntity<List<Account>> getCusByAccountName(@RequestParam(value = "customerName", required = false) String customerName);
-
-    @GetMapping("ID/{accountEnrichmentID}")
-    @Operation(summary = "get account details based on account id")
-    ResponseEntity<AccountEnrichment> getAccountEnrichment(@PathVariable(value = "accountEnrichmentID") String accountID) throws AppAccountNotFoundException;
-*/
 
 
 }
