@@ -1,6 +1,7 @@
 package com.abhi.assignment2.api.controller;
 
 
+import com.abhi.assignment2.api.dto.AccountDetailsDTO;
 import com.abhi.assignment2.api.entity.Account;
 import com.abhi.assignment2.api.exception.AccountFileUploadException;
 import com.abhi.assignment2.api.exception.AppAccountNotFoundException;
@@ -21,15 +22,15 @@ import java.io.IOException;
 @Validated
 @Tag(name = "customer accounts api", description = "api operations for customer account")
 public interface AccountController {
+
     @PostMapping(value = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "AC file upload")
     ResponseEntity<?> fileUpload(@RequestParam("uploadfile") MultipartFile uploadfile) throws AccountFileUploadException, IOException;
 
 
-    @GetMapping("/{accountID}")
+    @GetMapping("/{accountId}")
     @Operation(summary = "Get information about a given account")
-    ResponseEntity<Account> get(@PathVariable("accountID") @NotNull @Length(min = 12, max = 12) String accountID) throws AppAccountNotFoundException;
-
+    ResponseEntity<AccountDetailsDTO> get(@PathVariable("accountId") @NotNull @Length(min = 12, max = 12) String accountId) throws AppAccountNotFoundException;
 
 }
 

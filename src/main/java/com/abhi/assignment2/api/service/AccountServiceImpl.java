@@ -1,16 +1,17 @@
 package com.abhi.assignment2.api.service;
 
-import com.abhi.assignment2.api.dto.AccountDTO;
+import com.abhi.assignment2.api.dto.AccountDetailsDTO;
 import com.abhi.assignment2.api.entity.Account;
 import com.abhi.assignment2.api.exception.AppAccountNotFoundException;
+import com.abhi.assignment2.api.mapper.AccountDTOMapper;
 import com.abhi.assignment2.api.repository.AccountsRepo;
-import com.abhi.assignment2.externalsvc.AccountRefDataService;
-import com.abhi.assignment2.externalsvc.CustomerRefDataService;
-import com.abhi.assignment2.mapper.AccountDTOMapper;
+import com.abhi.assignment2.externalsvc.acrefsvc.AccountRefDataService;
+import com.abhi.assignment2.externalsvc.acrefsvc.dto.AccountDTO;
+import com.abhi.assignment2.externalsvc.custrefsvc.CustomerRefDataService;
+import com.abhi.assignment2.externalsvc.custrefsvc.dto.CustomerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void saveFileDataToDB(Path path) {
-//        accountsRepo.deleteAll();
+        accountsRepo.deleteAll();
         try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -51,21 +52,23 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account get(String accountID) throws AppAccountNotFoundException {
+    public AccountDetailsDTO get(String accountID) throws AppAccountNotFoundException {
         Optional<Account> accountOptional = accountsRepo.findByAccountID(accountID);
         if (accountOptional.isPresent()) {
-            // TODO - add account and customer infoermation here. by calling reference data serivces ( as3 and as4 APIs )
-//         hint - WebClient
-            Account acc=accountOptional.get();
+            Account account = accountOptional.get();
+            AccountDetailsDTO accountDetailsDTO = accountDTOMapper.convertAccountToAccountDetailsDTO(account);
             String cusname = accountOptional.get().getCustomerName();
-            AccountDTO accountRefDataService1 = accountRefDataService.getAccountById(accountID);
-            AccountDTO customerRefDataService1 = customerRefDataService.getCustomerByName(cusname);
-            log.info(String.valueOf(accountRefDataService1));
-            System.out.println(accountRefDataService1);
-            System.out.println(customerRefDataService1);
-            return acc;
+            AccountDTO accountDTO = accountRefDataService.getAccountById(accountID);
+            CustomerDTO customerDTO = customerRefDataService.getCustomerByName(cusname);
+
+            System.out.println(accountDTO);
+            System.out.println(customerDTO);
+            // add data from ref services to main DTO object
+            accountDetailsDTO.setAccountDTO(accountDTO);
+            accountDetailsDTO.setCustomerDTO(customerDTO);
+            return accountDetailsDTO;
         } else {
-        throw new AppAccountNotFoundException("Missing account. AC : " + accountID);
-    }
+            throw new AppAccountNotFoundException("Missing account. AC : " + accountID);
+        }
     }
 }

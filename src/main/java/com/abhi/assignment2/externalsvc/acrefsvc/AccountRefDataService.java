@@ -1,13 +1,10 @@
-package com.abhi.assignment2.externalsvc;
+package com.abhi.assignment2.externalsvc.acrefsvc;
 
-import com.abhi.assignment2.api.dto.AccountDTO;
-import jakarta.annotation.PostConstruct;
+import com.abhi.assignment2.externalsvc.acrefsvc.dto.AccountDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -18,20 +15,16 @@ import java.net.URI;
 @Slf4j
 public class AccountRefDataService {
     @Autowired
-    WebClient webClient;
+    private WebClient webClient;
 
     private URI uri;
 
-    @PostConstruct
-    public void init() {
-        // webClient= WebClient.builder().baseUrl("http://localhost:9003/accounts").defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
-        uri = UriComponentsBuilder.fromHttpUrl("http://localhost:9003/accounts/{accountID}").build().toUri();
-
+    public AccountRefDataService() {
+        uri = UriComponentsBuilder.fromHttpUrl("http://localhost:9003/accounts/").build().toUri();
     }
 
-//    @GetMapping("/accounts/{accountID}")
-    public AccountDTO getAccountById(@PathVariable String accountID) {
-        AccountDTO accountDTO = webClient.get()
+    public AccountDTO getAccountById(String accountID) {
+        AccountDTO accountDetailsDTO = webClient.get()
                 .uri(uri + accountID)
                 .exchangeToMono(
                         response -> {
@@ -45,8 +38,8 @@ public class AccountRefDataService {
                         }
                 )
                 .block();
-        log.info("AccountSvcWebClient GET ac:" + accountDTO);
-        return accountDTO;
+        log.info("AccountRefDataService getAccountById:" + accountDetailsDTO);
+        return accountDetailsDTO;
 
         //return webClient.get().uri(uri + accountID).retrieve().bodyToMono(AccountDTO.class).contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON).block();
     }

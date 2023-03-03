@@ -1,5 +1,6 @@
 package com.abhi.assignment2.api.controller;
 
+import com.abhi.assignment2.api.dto.AccountDetailsDTO;
 import com.abhi.assignment2.api.entity.Account;
 import com.abhi.assignment2.api.exception.AccountFileUploadException;
 import com.abhi.assignment2.api.exception.AppAccountNotFoundException;
@@ -56,9 +57,9 @@ public class AccountControllerImpl implements AccountController {
     }
 
     @Override
-    public ResponseEntity<Account> get(String accountID) throws AppAccountNotFoundException {
-        Account account = accountService.get(accountID);
-        return new ResponseEntity<>(account, HttpStatus.OK);
+    public ResponseEntity<AccountDetailsDTO> get(String accountId) throws AppAccountNotFoundException {
+        AccountDetailsDTO accountDetailsDTO = accountService.get(accountId);
+        return new ResponseEntity<>(accountDetailsDTO, HttpStatus.OK);
     }
 
 
