@@ -9,10 +9,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 public class Assignment2Application {
-	@Bean
-	public WebClient webClient(){
-		return WebClient.builder().build();
-	}
+//	@Bean
+//	public WebClient webClient(){
+//		return WebClient.builder().build();
+//	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Assignment2Application.class, args);

@@ -41,7 +41,6 @@ public class AccountRefDataService {
         log.info("AccountRefDataService getAccountById:" + accountDetailsDTO);
         return accountDetailsDTO;
 
-        //return webClient.get().uri(uri + accountID).retrieve().bodyToMono(AccountDTO.class).contentType(MediaType.MULTIPART_FORM_DATA).accept(MediaType.APPLICATION_JSON).block();
     }
 
 }
