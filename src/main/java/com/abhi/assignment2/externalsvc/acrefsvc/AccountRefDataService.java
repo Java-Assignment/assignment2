@@ -15,15 +15,20 @@ import java.net.URI;
 @Slf4j
 public class AccountRefDataService {
     @Autowired
-    private WebClient webClient;
+    private WebClient.Builder webClientBuilder;
+
+//    private WebClient webClient;
 
     private URI uri;
 
     public AccountRefDataService() {
+
         uri = UriComponentsBuilder.fromHttpUrl("http://localhost:9003/accounts/").build().toUri();
     }
 
     public AccountDTO getAccountById(String accountID) {
+        WebClient webClient = webClientBuilder.build();
+
         AccountDTO accountDetailsDTO = webClient.get()
                 .uri(uri + accountID)
                 .exchangeToMono(

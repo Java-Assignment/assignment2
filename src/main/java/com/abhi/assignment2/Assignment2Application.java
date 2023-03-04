@@ -2,10 +2,7 @@ package com.abhi.assignment2;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.retry.annotation.EnableRetry;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
 public class Assignment2Application {
@@ -14,8 +11,8 @@ public class Assignment2Application {
 //		return WebClient.builder().build();
 //	}
 
-	public static void main(String[] args) {
-		SpringApplication.run(Assignment2Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Assignment2Application.class, args);
+    }
 
 }
