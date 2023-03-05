@@ -3,6 +3,7 @@ package com.abhi.assignment2.api.controller;
 
 import com.abhi.assignment2.api.dto.AccountDetailsDTO;
 import com.abhi.assignment2.api.entity.Account;
+import com.abhi.assignment2.api.exception.AccountFileGenException;
 import com.abhi.assignment2.api.exception.AccountFileUploadException;
 import com.abhi.assignment2.api.exception.AppAccountNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,6 +32,10 @@ public interface AccountController {
     @GetMapping("/{accountId}")
     @Operation(summary = "Get information about a given account")
     ResponseEntity<AccountDetailsDTO> get(@PathVariable("accountId") @NotNull @Length(min = 12, max = 12) String accountId) throws AppAccountNotFoundException;
+
+    @GetMapping("/file")
+    @Operation(summary = "Creation of report")
+    ResponseEntity<Object>getAccFile() throws AccountFileGenException;
 
 }
 

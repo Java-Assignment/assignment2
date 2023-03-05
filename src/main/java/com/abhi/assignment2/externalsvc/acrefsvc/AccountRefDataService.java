@@ -22,6 +22,8 @@ public class AccountRefDataService {
     private URI uri;
 
     public AccountRefDataService() {
+//        UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(accountRefSvcUrl).build();
+//        URI uri=uriComponents.toUri();
 
         uri = UriComponentsBuilder.fromHttpUrl("http://localhost:9003/accounts/").build().toUri();
     }

@@ -30,6 +30,9 @@ public class CustomerRefDataService {
 
 
     public CustomerRefDataService() {
+
+//        UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(customerRefSvcUrl).build();
+//        URI uri=uriComponents.toUri();
         uri = UriComponentsBuilder.fromHttpUrl("http://localhost:9004/customer/").build().toUri();
     }
 

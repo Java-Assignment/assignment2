@@ -21,5 +21,10 @@ public class AppExceptionHandler {
         log.error(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(value=AccountFileGenException.class)
+    public ResponseEntity<String> hadleException(AccountFileGenException exception){
+        log.error(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

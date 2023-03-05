@@ -18,20 +18,3 @@ public class AccountDetailsDTO {
     private AccountDTO accountDTO;
     private CustomerDTO customerDTO;
 }
-
-//@NoArgsConstructor
-//public class CustomerDTO {
-//    private String customerName;
-//    private int age;
-//    private String relationship;
-//    private String address;
-//}
-//public class AccountDTO {
-//    private String accountId;
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private LocalDate createDate;
-//
-//    private AccountType accountType;
-//    private AccountStatus accountStatus;
-//
-//}
